@@ -37,6 +37,7 @@ PROCESS
 
     if($Upload)
     {
+        $source = Join-Path $workDir ''
         $files = Get-ChildItem -Path $workDir
         $total = $files | Measure-Object -property length -sum
 
@@ -52,7 +53,7 @@ PROCESS
 
         Write-Host "Start to uploading $($files.Count) files ($total bytes)."
         $start = [datetime]::Now
-        Write-S3Object -BucketName $bucket -KeyPrefix $s3Key -Folder $workDir -Recurse -Force | Out-Null
+        Write-S3Object -BucketName $bucket -Folder $workDir -Recurse -Force | Out-Null
     }
     else
     {
@@ -67,8 +68,7 @@ PROCESS
             $s3Key = 'test'
             $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
         }
-        $sizes = $objects | Select-Object -ExpandProperty Size
-        $total = [Linq.Enumerable]::Sum( [int[]]$sizes)
+        $total = $objects | Measure-Object -property Size -sum
 
         Write-Host "Start to download $($objects.Count) files ($total bytes)."
         $start = [datetime]::Now
