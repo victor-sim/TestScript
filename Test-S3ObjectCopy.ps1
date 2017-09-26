@@ -27,7 +27,7 @@ BEGIN
 }
 PROCESS
 {
-    $s3Key = "test_$PipelineName_$PipelineCounter"
+    $s3Key = "test_$($PipelineName)_$($PipelineCounter)"
     $currentPath = Resolve-Path '.\'
     $workDir = Join-Path $currentPath $s3Key
 
@@ -39,7 +39,7 @@ PROCESS
     {
         $source = Join-Path $workDir ''
         $files = Get-ChildItem -Path $workDir
-        $total = $files | Measure-Object -property length -sum
+        $total = ($files | Measure-Object -property length -sum).sum
 
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
 
@@ -68,9 +68,9 @@ PROCESS
             $s3Key = 'test/'
             $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
         }
-        $total = $objects | Measure-Object -property Size -sum
+        $total = ($objects | Measure-Object -property Size -sum).sum
 
-        Write-Host "Start to download $($objects.Count) files ($total bytes)."
+        Write-Host "Start to download $($objects.Count) files ($($total) bytes)."
         $start = [datetime]::Now
 
         foreach ($obj in $objects)
@@ -82,7 +82,7 @@ PROCESS
     [datetime] $end = [datetime]::Now
 
     [timespan] $timeDiff = $end - $start
-    $bytePerSecond = $total / $timeDiff.TotalSeconds
+    $bytePerSecond = $($total) / $timeDiff.TotalSeconds
 
 
     Write-Host ""
