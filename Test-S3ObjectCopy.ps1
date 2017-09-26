@@ -38,7 +38,7 @@ PROCESS
     if($Upload)
     {
         $source = Join-Path $workDir 'test'
-        $files = Get-ChildItem -Path $workDir
+        $files = Get-ChildItem -Path $source
         $total = ($files | Measure-Object -property length -sum).sum
 
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
