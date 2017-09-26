@@ -37,7 +37,7 @@ PROCESS
 
     if($Upload)
     {
-        $source = Join-Path $workDir ''
+        $source = Join-Path $workDir 'test'
         $files = Get-ChildItem -Path $workDir
         $total = ($files | Measure-Object -property length -sum).sum
 
