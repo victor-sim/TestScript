@@ -53,7 +53,7 @@ PROCESS
 
         Write-Host "Start to uploading $($files.Count) files ($total bytes)."
         $start = [datetime]::Now
-        Write-S3Object -BucketName $bucket -Folder $workDir -Recurse -Force | Out-Null
+        Write-S3Object -BucketName $bucket -Folder $source -KeyPrefix $s3Key -Recurse -Force | Out-Null
     }
     else
     {
@@ -62,12 +62,8 @@ PROCESS
             Remove-Item -Path $workDir -Force -Recurse
         }
 
+        $s3Key = 'test/'
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
-        if($objects -eq $null -or $objects.Count -eq 0)
-        {
-            $s3Key = 'test/'
-            $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
-        }
         $total = ($objects | Measure-Object -property Size -sum).sum
 
         Write-Host "Start to download $($objects.Count) files ($($total) bytes)."
