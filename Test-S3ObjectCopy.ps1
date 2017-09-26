@@ -38,7 +38,7 @@ PROCESS
     if($Upload)
     {
         $files = Get-ChildItem -Path $workDir
-        $sizes = $files | Select-Object -ExpandProperty Length
+        $sizes = $files | Select-Object -ExpandProperty 'Length'
         $total = [Linq.Enumerable]::Sum( [int[]]$sizes)
 
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
