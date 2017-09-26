@@ -5,10 +5,10 @@
         [switch] $Upload,
 
         [Parameter(mandatory=$false)]
-        [string] $PipelineCounter = $env:GO_PIPELINE_NAME,
+        [string] $PipelineCounter = $env:GO_PIPELINE_COUNTER,
 
         [Parameter(mandatory=$false)]
-        [string] $PipelineName = $env:GO_PIPELINE_COUNTER,
+        [string] $PipelineName = $env:GO_PIPELINE_NAME,
 
         [Parameter(mandatory=$false)]
         [string] $AccessKey = $env:ACCESS_KEY,
@@ -65,7 +65,7 @@ PROCESS
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
         if($objects -eq $null -or $objects.Count -eq 0)
         {
-            $s3Key = 'test'
+            $s3Key = 'test/'
             $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
         }
         $total = $objects | Measure-Object -property Size -sum
