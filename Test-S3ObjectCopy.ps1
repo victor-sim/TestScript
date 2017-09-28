@@ -62,7 +62,7 @@ PROCESS
             Remove-Item -Path $workDir -Force -Recurse
         }
 
-        $s3Key = 'test/'
+        $s3Key = 'test/MobiControl1400Setup_4406_release.exe'
         $objects = Get-S3Object -BucketName $bucket -KeyPrefix $s3Key
         $total = ($objects | Measure-Object -property Size -sum).sum
 
@@ -71,7 +71,7 @@ PROCESS
 
         foreach ($obj in $objects)
         {
-            Copy-S3Object -BucketName $bucket -Key $obj.Key  -Force -LocalFolder $workDir | Out-Null
+            Copy-S3Object -BucketName $bucket -Key $obj.Key -Force -LocalFolder $workDir | Out-Null
         }
         Write-Host "Download completed"
     }
