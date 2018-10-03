@@ -24,6 +24,7 @@ BEGIN
     Set-DefaultAWSRegion -Region $Region | Out-Null
     Set-AWSCredential -AccessKey $AccessKey -SecretKey $SecretKey | Out-Null   
     [string] $bucket = 'mobicontrol-uat-installers'
+    #test comment
 }
 PROCESS
 {
